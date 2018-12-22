@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.finchley.study.dao.TableDao" >
+
+	<select id="getHead" resultType="org.finchley.study.dto.TableColumnDO" parameterType="org.finchley.study.query.Query" >
+	select column_name,data_type, column_type,column_key, column_comment from information_schema.columns
+	where table_schema = #{dbname} and table_name = #{tbname} 
+	
+	</select>
+
+</mapper>

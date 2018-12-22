@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.finchley.study.dao.MenuDao" >
+	
+    <select id="getUserMenus" resultType="org.finchley.study.dto.MenuDTO" parameterType="org.finchley.study.query.Query" >
+       select distinct m.menu_id as menuId, parent_id as parentId, `name`, url,
+			 permit,`type`,icon,order_num,gmt_create, gmt_modified ,component
+			 from sys_menu m left join sys_role_menu rm on m.menu_id = rm.menu_id left join  
+		     sys_user_role ur on rm.role_id =ur.role_id where ur.user_id = #{userId} 
+			  <if test="supMenuId != null" > and m.parent_id= #{supMenuId} </if>
+			  and m.type >= 0 order by m.type,m.parent_id,m.menu_id,m.order_num
+    </select>
+
+	<select id="getFixedMenus" resultType="org.finchley.study.dto.MenuDTO">
+		select distinct m.menu_id as menuIdd, parent_id as parentId, `name`, url,
+			 permit,`type`,icon ,order_num,gmt_create, gmt_modified ,component 
+			 from sys_menu m  where m.type = -1
+	</select>
+	
+	<select id="menuTree" resultType="org.finchley.study.dto.MenuTreeDTO">
+		select menu_id as tid, parent_id as pid, `name`, icon
+			 from sys_menu  
+			<if test="types!=null"> where type in (
+       			<foreach collection="list" item="item" index="index" separator=",">#{item}</foreach>)
+       		</if>
+       		order by type,prent_id,menu_id
+	</select>
+	
+	 <select id="list" resultType="org.finchley.study.dto.MenuDO" parameterType="org.finchley.study.query.Query" >
+       	select distinct m.menu_id as menuId, m.parent_id as parentId, s.name as parentN,m.`name`, m.url,
+		m.permit,m.`type`,m.icon,m.order_num,m.gmt_create, m.gmt_modified ,m.component,x.name as typeN 
+			 from sys_menu m left join sys_menu s on m.parent_id = s.menu_id,( select * from sys_dict where parent_id = 8) x 
+		where m.type = x.value 
+       		<if test="parentId != null">and m.parent_id = #{parentId} </if>
+       		<if test="permit!= null">and m.permit like #{permit}"%" </if>
+       		<if test="type!= null">and m.type = #{type} </if>
+       		<if test="types!=null">and m.type in (
+       		<foreach collection="list" item="item" index="index" separator=",">#{item}</foreach>)
+       		</if>
+       		<if test="nameL!= null">and m.name like "%"#{nameL}"%" </if>
+       	
+       	<if test="offset != null and limit !=null" > limit #{offset},#{limit}</if>
+    </select>
+    
+    <select id="getCount"  resultType="Integer" parameterType="org.finchley.study.query.Query" >
+    	select count(menu_id) from sys_menu m
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+       		<if test="parentId != null">and m.parent_id = #{parentId} </if>
+       		<if test="permit!= null">and m.permit like #{permit}"%" </if>
+       		<if test="type!= null">and m.type = #{type} </if>
+       		<if test="types!=null">and m.type in(
+       		<foreach collection="list" item="item" index="index" separator=",">#{item}</foreach>)
+       		</if>
+       		<if test="nameL!= null">and m.name like "%"#{nameL}"%" </if>
+       		</trim>
+    </select>
+	
+	<select id="getMenu" resultType="org.finchley.study.dto.MenuDO" parameterType="org.finchley.study.query.Query" >
+		select m.menu_id as menuId, m.parent_id as parentId, m.`name`, m.url,x.name as typeN, s.name as parentN,
+		m.permit,m.`type`,m.icon,m.order_num,m.gmt_create, m.gmt_modified ,m.component 
+		from sys_menu m left join sys_menu s on m.parent_id = s.menu_id,( select * from sys_dict where parent_id = 8) x 
+		where m.type = x.value and m.menu_id = #{menuId} 
+	</select>
+
+	<insert id="createMenu" parameterType="org.finchley.study.dto.MenuDTO">
+		insert into sys_menu (parent_id,name,url,permit,type,icon,order_num,gmt_create,component) 
+		values(#{parentId},#{name},#{url},#{permit},#{type},#{icon},#{order_num},now(),#{component});
+	</insert>
+
+	<update id="updateMenu" parameterType="org.finchley.study.dto.MenuDTO">
+		update sys_menu
+		<set >
+			<if test="parentId != null" >
+                parent_id = #{parentId},
+            </if>
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="url != null" >
+                url = #{url},
+            </if>
+            <if test="permit != null" >
+                permit = #{permit},
+            </if>
+            <if test="type != null" >
+                type = #{type},
+            </if>
+            <if test="icon != null" >
+                icon = #{icon},
+            </if>
+            <if test="order_num != null" >
+                order_num = #{order_num},
+            </if>
+            <if test="gmt_modified != null" >
+                gmt_modified = #{gmt_modified},
+            </if>
+            <if test="component != null" >
+                component = #{component},
+            </if>
+		</set> 
+		where menu_id = #{menuId}
+	</update>
+
+</mapper>

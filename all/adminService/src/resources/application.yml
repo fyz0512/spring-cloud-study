@@ -1,0 +1,46 @@
+server:
+  port: 8010
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/muntjak?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: muntjak
+    password: muntjak
+  application:
+    name: service-admin
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: logs
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: finchley123
+    timeout: 20000
+    pool:
+      max-idle: 3
+      max-wait: -1      
+  security:
+    excludePaths: /login,/extcode,/resetpass
+##  password:
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+     
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+    healthcheck:
+      enabled: true
+logging:
+  level:
+    org.finchley.study.dao: debug
+      
+
+info:
+  app:
+    name: 安全认证中心，负责用户的token生成和验证。
+    version: 1.0.0 

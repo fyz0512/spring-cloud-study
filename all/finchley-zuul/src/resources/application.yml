@@ -1,0 +1,34 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+server:
+  port: 8000
+
+spring:
+  application:
+    name: service-gateway
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
+  mongo:
+    host: 127.0.0.1
+    port: 27017
+    database: logs
+ribbon:
+    ReadTimeout: 60000
+    ConnectTimeout: 60000
+
+info:
+  app:
+    name: 服务网关，Zuul。
+    version: 1.0.0
+
+#spring:
+#  cloud:
+#    zuul:
+#      discovery:      #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+#        locator:      #路由访问方式：https://Gateway_HOST:Gateway_PORT/大写的serviceId/**，其中微服务应用名默认大写访问。
+#          enabled: true
+

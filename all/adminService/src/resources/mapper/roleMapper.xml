@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.finchley.study.dao.RoleDao" >
+
+	<select id="list" resultType="org.finchley.study.dto.RoleDO" parameterType="org.finchley.study.query.Query">
+		select * from sys_role
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+       		<if test="role_name != null">and role_name = #{role_name} </if>
+       		<if test="role_nameL!= null">and role_name like "%"#{role_nameL}"%" </if>
+       		<if test="role_sign != null">and role_sign = #{role_sign} </if>
+       		<if test="role_signL != null">and role_sign like "%"#{role_signL}"%" </if>
+       	</trim>
+       	<if test="offset != null and limit !=null" > limit #{offset},#{limit}</if>
+	</select>
+
+	<select id="getRole" resultType="org.finchley.study.dto.RoleDO" parameterType="org.finchley.study.query.Query">
+		select * from sys_role 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+       		<if test="role_name != null">and role_name = #{role_name} </if>
+       		<if test="role_sign != null">and role_sign = #{role_sign} </if>
+       		<if test="role_id != null">and role_id = #{role_id} </if>
+       		<if test="not_role_id != null">and role_id != #{role_id} </if>
+       	</trim>
+		 limit 1
+	</select>
+
+	<select id="getCount" resultType="Integer" parameterType="org.finchley.study.query.Query" >
+	
+		select count(role_id) from sys_role
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+       		<if test="role_name != null">and role_name = #{role_name} </if>
+       		<if test="role_nameL!= null">and role_name like "%"#{role_nameL}"%" </if>
+       		<if test="role_sign != null">and role_sign = #{role_sign} </if>
+       		<if test="role_signL != null">and role_sign like "%"#{role_signL}"%" </if>
+       	</trim>
+	</select>
+
+	<insert id="createRole"  parameterType="org.finchley.study.dto.RoleDO">
+	 insert into sys_role (role_name,role_sign,remark,user_id_create,gmt_create) values 
+	 (#{role_name},#{role_sign},#{remark},#{user_id_create},now())
+	
+	</insert>
+
+	<delete id="delete"  parameterType="java.util.List">
+		delete from sys_role where role_id in
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")"> 
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="updateRole" parameterType="org.finchley.study.dto.RoleDO">
+		update sys_role 
+		<set>
+            <if test="role_name != null" >
+                role_name = #{role_name},
+            </if>
+            <if test="role_sign != null" >
+                role_sign = #{role_sign},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+             <if test="user_id_modify != null" >
+                user_id_modify = #{user_id_modify},
+            </if>
+             <if test="gmt_modified != null" >
+                gmt_modified = #{gmt_modified},
+            </if>
+        </set>
+        where role_id = #{role_id}
+	</update>
+	
+	<select id="getRoleMenu" resultType="org.finchley.study.dto.MenuTreeDTO" parameterType="org.finchley.study.query.Query">
+		select m.menu_id as tid,m.parent_id as pid, if(m.icon is null,m.name,CONCAT('&lt;i class=\'',m.icon,'\'&gt;&lt;/i&gt; ',m.name)) as name,
+		m.name as title,if(r.role_id is null,false,true) as checked 
+		from sys_menu m left join sys_role_menu r on m.menu_id = r.menu_id 
+		<if test="role_id != null"> and r.role_id = #{role_id} </if>
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="parent_id!= null"> and m.status = #{status} </if>
+       		<if test="types!= null"> and m.type in (
+       		<foreach collection="types" item="item" index="index" separator=",">#{item}</foreach>) 
+       		</if>
+       	</trim>
+       	order by m.type,m.parent_id,m.order_num,m.menu_id
+	</select>
+	
+	<insert id="setRoleMenu" parameterType="java.util.Map">
+		delete from sys_role_menu where role_id = #{role_id};
+		
+		insert into sys_role_menu(role_id,menu_id) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+    	(#{role_id},#{item})
+    	</foreach>
+	</insert>
+
+</mapper>

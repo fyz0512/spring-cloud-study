@@ -1,0 +1,30 @@
+server:
+  port: 8899
+ 
+spring:
+  cloud:
+    config:
+      enabled: true
+      server:
+        svn:
+          #uri: svn://192.168.2.80/springcloud/finchely-study/
+          uri: https://127.0.0.1/svn/spring-cloud
+          username: muntjak
+          password: 123456
+        #git:
+        #  uri: https://github.com/pcf-guides/configuration-server-config-repo
+        default-label: config
+  profiles:
+    active: subversion
+  application:
+    name: service-config
+
+logging:
+  levels:
+    org.springframework.boot.env.PropertySourcesLoader: TRACE
+    org.springframework.cloud.config.server: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/

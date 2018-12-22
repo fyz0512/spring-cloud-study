@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.finchley.study.dao.DictionaryDao" >
+
+	<select id="getDict" resultType="org.finchley.study.dto.DictionaryDTO" parameterType="org.finchley.study.query.Query" >
+		select * from sys_dict  
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+       		<if test="parentId != null">and parent_id = #{parentId} </if>
+       		<if test="nameL!= null">and name like "%"#{nameL}"%" </if>
+       		<if test="typeL!= null">and type like "%"#{typeL}"%" </if>
+       		<if test="type!= null">and type =#{type} </if>
+       	</trim>
+       	<if test="offset != null and limit !=null" > limit #{offset},#{limit}</if> 
+	
+	</select>
+
+</mapper>

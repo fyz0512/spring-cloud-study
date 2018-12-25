@@ -42,5 +42,6 @@ logging:
 
 info:
   app:
-    name: 安全认证中心，负责用户的token生成和验证。
-    version: 1.0.0 
+    name: 管理中心
+    description: 负责菜单管理，用户管理，角色管理；控制用户的登录登出，以及用户的token生成和验证。
+    version: 0.0.1 

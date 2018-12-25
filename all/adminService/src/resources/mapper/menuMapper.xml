@@ -17,13 +17,13 @@
 			 from sys_menu m  where m.type = -1
 	</select>
 	
-	<select id="menuTree" resultType="org.finchley.study.dto.MenuTreeDTO">
-		select menu_id as tid, parent_id as pid, `name`, icon
+	<select id="getMenuTree" resultType="org.finchley.study.dto.MenuTreeDTO">
+		select menu_id as tid, parent_id as pid, `name` as title, if(icon is null,name,concat('&lt;i class="',icon,'"&gt;&lt;/i&gt;',name)) as name 
 			 from sys_menu  
 			<if test="types!=null"> where type in (
-       			<foreach collection="list" item="item" index="index" separator=",">#{item}</foreach>)
+       			<foreach collection="types" item="item" index="index" separator=",">#{item}</foreach>)
        		</if>
-       		order by type,prent_id,menu_id
+       		order by type,parent_id,order_num,menu_id
 	</select>
 	
 	 <select id="list" resultType="org.finchley.study.dto.MenuDO" parameterType="org.finchley.study.query.Query" >
@@ -46,12 +46,15 @@
     	select count(menu_id) from sys_menu m
     	<trim prefix="WHERE" prefixOverrides="AND | OR">
        		<if test="parentId != null">and m.parent_id = #{parentId} </if>
-       		<if test="permit!= null">and m.permit like #{permit}"%" </if>
+       		<if test="permit!= null">and m.permit = #{permit} </if>
+       		<if test="permitL!= null">and m.permit like "%"#{permitL}"%" </if>
        		<if test="type!= null">and m.type = #{type} </if>
        		<if test="types!=null">and m.type in(
        		<foreach collection="list" item="item" index="index" separator=",">#{item}</foreach>)
        		</if>
        		<if test="nameL!= null">and m.name like "%"#{nameL}"%" </if>
+       		<if test="name!= null">and m.name = #{nameL} </if>
+       		<if test="NmenuId!= null">and m.menu_id != #{NmenuId} </if>
        		</trim>
     </select>
 	
@@ -62,7 +65,7 @@
 		where m.type = x.value and m.menu_id = #{menuId} 
 	</select>
 
-	<insert id="createMenu" parameterType="org.finchley.study.dto.MenuDTO">
+	<insert id="createMenu" parameterType="org.finchley.study.dto.MenuDO">
 		insert into sys_menu (parent_id,name,url,permit,type,icon,order_num,gmt_create,component) 
 		values(#{parentId},#{name},#{url},#{permit},#{type},#{icon},#{order_num},now(),#{component});
 	</insert>

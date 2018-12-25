@@ -28,6 +28,8 @@ public class MenuController {
 	@Autowired
 	MenuService menuService;
 	
+	
+	
 	@RequestMapping("userMenus")
 	public List<MenuDTO> userMenu(){
 		
@@ -80,18 +82,28 @@ public class MenuController {
 	@RequestMapping("add")
 	public ResponseData addMenu(HttpServletRequest request) {
 		
-		if(request.getParameter("save")!=null) {
+		if(request.getParameter("save")==null) {
 			
 			return menuService.add();
 		}else if(HttpContextUtils.checkField(Arrays.asList(new String[] {"name","permit"}))) {
 			
-			MenuDTO menu = new MenuDTO();
+			MenuDO menu = new MenuDO();
 			menu.setComponent(request.getParameter("component"));
 			menu.setIcon(request.getParameter("icon"));
 			menu.setName(request.getParameter("name"));
 			if(request.getParameter("parentId")!=null)
 				menu.setParentId(Long.parseLong(request.getParameter("parentId")));
+			else
+				menu.setParentId(0L);
+			if(request.getParameter("order_num")!=null)
+				menu.setOrder_num(Integer.parseInt(request.getParameter("order_num")));
+			else
+				menu.setOrder_num(0);
+			menu.setUrl(request.getParameter("url"));
+			menu.setPermit(request.getParameter("permit"));
+			menu.setType(Integer.parseInt(request.getParameter("type")));
 			
+			return menuService.createMenu(menu);
 		}
 		return ResponseData.requestError();
 	}
@@ -109,14 +121,35 @@ public class MenuController {
 				//
 				return menuService.getMenu(menuId);
 			}else {
-				MenuDO user = new MenuDO();
-				user.setMenuId(Long.parseLong(menuId));
+				MenuDO menu = new MenuDO();
+				menu.setMenuId(Long.parseLong(menuId));
 				if(request.getParameter("parent_id")!=null)
-					user.setParentId(Long.parseLong(request.getParameter("parent_id")));
+					menu.setParentId(Long.parseLong(request.getParameter("parent_id")));
+				else
+					menu.setParentId(0L);
+				if(request.getParameter("order_num")!=null)
+					menu.setOrder_num(Integer.parseInt(request.getParameter("order_num")));
+				else
+					menu.setOrder_num(0);
+				menu.setUrl(request.getParameter("url"));
+				menu.setPermit(request.getParameter("permit"));
+				menu.setType(Integer.parseInt(request.getParameter("type")));
+				menu.setComponent(request.getParameter("component"));
+				menu.setIcon(request.getParameter("icon"));
+				menu.setName(request.getParameter("name"));
 				
-				
-				return menuService.updateMenu(user);
+				return menuService.updateMenu(menu);
 			}
+		}
+		return ResponseData.requestError();
+	}
+	
+	@RequestMapping("del")
+	public ResponseData delete(@RequestParam("menu_id") String[] menuIds) {
+		
+		if(menuIds!=null && menuIds.length>0) {
+			
+			return menuService.delete(menuIds);
 		}
 		return ResponseData.requestError();
 	}
@@ -131,4 +164,12 @@ public class MenuController {
 		return ResponseData.requestError();
 	}
 	
+	@RequestMapping("uniqName")
+	public ResponseData uniquenceCheck(@RequestParam(name="name",required=false) String name,
+			@RequestParam(name="parentId",required=false) String parentId,
+			@RequestParam(name="permit",required=false) String permit,
+			@RequestParam(name="menuId",required=false) String menuId) {
+		
+		return menuService.uniqName(name,parentId,permit,menuId);
+	}
 }

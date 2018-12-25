@@ -26,7 +26,7 @@ public class PageDTO implements Serializable {
 	private int total;
 	private TableDTO data;
 
-	private Map<String,List<Map<String,String>>> searhs;
+	private Map<String,List<DictionaryDTO>> searhs;
 	
 	public PageDTO() {
 
@@ -64,11 +64,11 @@ public class PageDTO implements Serializable {
 		this.data = data;
 	}
 
-	public Map<String,List<Map<String,String>>> getSearhs() {
+	public Map<String,List<DictionaryDTO>> getSearchs() {
 		return searhs;
 	}
 
-	public void setSearhs(Map<String,List<Map<String,String>>> searhs) {
+	public void setSearchs(Map<String,List<DictionaryDTO>> searhs) {
 		this.searhs = searhs;
 	}
 

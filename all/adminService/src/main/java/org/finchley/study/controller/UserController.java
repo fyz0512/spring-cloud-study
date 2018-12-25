@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.finchley.study.annotation.Log;
 import org.finchley.study.constants.CommonConstants;
+import org.finchley.study.context.SessionContext;
 import org.finchley.study.dto.PageDTO;
 import org.finchley.study.query.Query;
 import org.finchley.study.response.ResponseData;
@@ -15,6 +16,7 @@ import org.finchley.study.utils.MD5Utils;
 import org.finchley.study.dto.UserDO;
 import org.finchley.study.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +28,6 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
-	
 	
 	
 	@RequestMapping("list")
@@ -67,6 +68,26 @@ public class UserController {
 		return page;
 	}
 	
+	@Log("修改密码")
+	@RequestMapping("/modipass")
+	public ResponseData modiPassword(HttpServletRequest request) {
+	
+		
+		String oldPass = request.getParameter("oldpass");
+		String newPass = request.getParameter("newpass");
+		String confirmPass = request.getParameter("confirmpass");
+		
+		Assert.notNull(oldPass,"old password must not null.");
+		Assert.notNull(newPass,"new password must not null.");
+		
+		if(newPass.equals(confirmPass)) {
+			
+			return ResponseData.error("新密码两次输入不一致");
+			
+		}
+		
+		return userService.changePassword(oldPass, newPass,SessionContext.getUserID());
+	}
 	
 	
 	@RequestMapping("add")

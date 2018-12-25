@@ -33,6 +33,7 @@ public class MenuDTO implements Serializable{
     //组件
     private String component;
     
+    private Integer order_num;
     
     public Long getMenuId() {
         return menuId;
@@ -96,6 +97,14 @@ public class MenuDTO implements Serializable{
 
 	public void setComponent(String component) {
 		this.component = component;
+	}
+
+	public Integer getOrder_num() {
+		return order_num;
+	}
+
+	public void setOrder_num(Integer order_num) {
+		this.order_num = order_num;
 	}
 
 }

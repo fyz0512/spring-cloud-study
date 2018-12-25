@@ -6,14 +6,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.finchley.study.constants.CommonConstants;
+import org.finchley.study.dto.MenuTreeDTO;
 import org.finchley.study.dto.PageDTO;
+import org.finchley.study.dto.RoleDO;
 import org.finchley.study.query.Query;
 import org.finchley.study.response.ResponseData;
-import org.finchley.study.utils.HttpContextUtils;
-import org.finchley.study.dto.MenuDO;
-import org.finchley.study.dto.MenuTreeDTO;
-import org.finchley.study.dto.RoleDO;
 import org.finchley.study.service.RoleService;
+import org.finchley.study.utils.HttpContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

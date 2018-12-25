@@ -74,9 +74,9 @@ CREATE TABLE IF NOT EXISTS `sys_menu` (
   `user_id_modified` bigint(20) DEFAULT '0' COMMENT '最近修改用户',
   PRIMARY KEY (`menu_id`),
   UNIQUE KEY `rightname` (`permit`)
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COMMENT='菜单信息';
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8 COMMENT='菜单信息';
 
--- 正在导出表  muntjak.sys_menu 的数据：~44 rows (大约)
+-- 正在导出表  muntjak.sys_menu 的数据：~41 rows (大约)
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `permit`, `url`, `type`, `icon`, `order_num`, `component`, `gmt_create`, `gmt_modified`, `user_id_create`, `user_id_modified`) VALUES
 	(2, 3, '系统菜单', 'admin:menu', '/service-admin/menu/list', 1, 'fa fa-th-list', 2, '/admin/menu.html', '2017-08-09 22:55:15', NULL, 0, 0),
@@ -116,7 +116,7 @@ INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `permit`, `url`, `type`,
 	(90, 0, '系统工具', 'tools', NULL, 0, 'fa fa-wrench', 5, NULL, NULL, NULL, 0, 0),
 	(91, NULL, '用户菜单', 'usermenu', '/service-admin/menu/userMenus', -1, NULL, NULL, NULL, NULL, NULL, 0, 0),
 	(92, NULL, '登出系统', 'logout', '/service-admin/logout', -1, NULL, NULL, NULL, NULL, NULL, 0, 0),
-	(93, NULL, '修改密码', 'changePass', '/service-admin/modiPass', -1, NULL, NULL, NULL, NULL, NULL, 0, 0),
+	(93, NULL, '修改密码', 'changePass', '/service-admin/user/modiPass', -1, NULL, NULL, NULL, NULL, NULL, 0, 0),
 	(94, NULL, '重载菜单', 'reload', '/service-admin/reload', -1, NULL, NULL, NULL, NULL, NULL, 0, 0),
 	(95, NULL, '首页', 'home', '/main.html', -1, NULL, NULL, '/main.html', NULL, NULL, 0, 0);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `sys_role_menu` (
   PRIMARY KEY (`role_id`,`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色许可的菜单';
 
--- 正在导出表  muntjak.sys_role_menu 的数据：~203 rows (大约)
+-- 正在导出表  muntjak.sys_role_menu 的数据：~39 rows (大约)
 /*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES
 	(1, 2),
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `sys_user_role` (
   PRIMARY KEY (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户拥有的角色';
 
--- 正在导出表  muntjak.sys_user_role 的数据：~39 rows (大约)
+-- 正在导出表  muntjak.sys_user_role 的数据：~22 rows (大约)
 /*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES
 	(1, 1),

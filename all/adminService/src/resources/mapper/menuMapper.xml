@@ -104,4 +104,15 @@
 		where menu_id = #{menuId}
 	</update>
 
+	<delete id="delete"  parameterType="java.util.List">
+		delete from sys_menu where menu_id in
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")"> 
+			#{item}
+		</foreach>;
+		delete from sys_role_menu where menu_id in
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")"> 
+			#{item}
+		</foreach>;
+	</delete>
+
 </mapper>

@@ -146,7 +146,11 @@
    		 delete from sys_user where user_id in
     	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
 			#{item}
-		</foreach>
+		</foreach>;
+		 delete from sys_user_role where user_id in
+    	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>;
     </delete>
     
     <insert id="setUserRole" parameterType="java.util.Map">

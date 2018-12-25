@@ -62,8 +62,8 @@ public class MenuController {
 			q.addParam("nameL", request.getParameter("name"));
 		}
 		
-		if(request.getParameter("parent_id")!=null && request.getParameter("parent_id").length()>0) {
-			q.addParam("parent_id", request.getParameter("parent_id"));
+		if(request.getParameter("parentId")!=null && request.getParameter("parentId").length()>0) {
+			q.addParam("parentId", request.getParameter("parentId"));
 		}
 		
 		if(request.getParameter("type")!=null && request.getParameter("type").length()>0) {
@@ -115,7 +115,7 @@ public class MenuController {
 	}
 	@RequestMapping("edit")
 	public ResponseData updateMenu(HttpServletRequest request) {
-		String menuId= request.getParameter("menu_id");
+		String menuId= request.getParameter("menuId");
 		if(menuId!=null) {
 			if(request.getParameter("save")==null) {
 				//
@@ -123,8 +123,8 @@ public class MenuController {
 			}else {
 				MenuDO menu = new MenuDO();
 				menu.setMenuId(Long.parseLong(menuId));
-				if(request.getParameter("parent_id")!=null)
-					menu.setParentId(Long.parseLong(request.getParameter("parent_id")));
+				if(request.getParameter("parentId")!=null)
+					menu.setParentId(Long.parseLong(request.getParameter("parentId")));
 				else
 					menu.setParentId(0L);
 				if(request.getParameter("order_num")!=null)
@@ -145,7 +145,7 @@ public class MenuController {
 	}
 	
 	@RequestMapping("del")
-	public ResponseData delete(@RequestParam("menu_id") String[] menuIds) {
+	public ResponseData delete(@RequestParam("menuId") String[] menuIds) {
 		
 		if(menuIds!=null && menuIds.length>0) {
 			

@@ -21,7 +21,7 @@
     <module>finchley-common</module>
     <module>finchley-config</module>
     <module>finchley-zuul</module>
-    <module>finchley-bus</module>
+    <!-- >module>finchley-bus</module-->
     <module>adminService</module>
   </modules>
 </project>

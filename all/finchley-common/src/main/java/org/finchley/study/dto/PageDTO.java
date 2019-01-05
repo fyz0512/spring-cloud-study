@@ -24,8 +24,15 @@ public class PageDTO implements Serializable {
 	private int page;
 	private int pageSize;
 	private int total;
+	
+	/**
+	 * 表格数据
+	 */
 	private TableDTO data;
-
+	
+	/**
+	 * 查询条件中的枚举数据
+	 */
 	private Map<String,List<DictionaryDTO>> searhs;
 	
 	public PageDTO() {

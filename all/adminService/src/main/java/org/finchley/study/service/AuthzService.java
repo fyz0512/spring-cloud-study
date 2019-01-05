@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.finchley.study.context.SessionContext;
 import org.finchley.study.dao.UserDao;
+import org.finchley.study.dto.LoginDTO;
 import org.finchley.study.dto.UserDO;
 import org.finchley.study.query.Query;
 import org.finchley.study.response.ResponseData;
@@ -35,22 +36,22 @@ public class AuthzService {
 	 * @param extcode
 	 * @return
 	 */
-	public ResponseData login(String userName,String password,String extcode) {
+	public ResponseData login(LoginDTO loginInfo) {
 		
 		String name = "username";
 		
 		String emailReg = "^[a-zA-Z0-9][\\w\\.\\-_]+@[\\w][\\w\\.\\-_]+[a-zA-Z]$";
 		String mobileReg = "\\d{13}";
 		
-		if(Pattern.matches(emailReg, userName)) {
+		if(Pattern.matches(emailReg, loginInfo.getUsername())) {
 			name = "email";
-		}else if(Pattern.matches(mobileReg, userName)) {
+		}else if(Pattern.matches(mobileReg, loginInfo.getUsername())) {
 			name = "mobile";
 		}
 		
 		
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put(name, userName);
+		params.put(name, loginInfo.getUsername());
 		params.put("status", 1);	//用户状态标志 1：有效。
 		
 		Query query = new Query(params);
@@ -63,11 +64,11 @@ public class AuthzService {
 			
 			String upass = user.getPassword();
 			String salt = "";
-			if(extcode!=null) salt=JwtUtils.getPasswordSalt(extcode); //获得加密的附加码
+			if(loginInfo.getExtcode()!=null) salt=JwtUtils.getPasswordSalt(loginInfo.getExtcode()); //获得加密的附加码
 			
 			upass = MD5Utils.string2MD5(upass+(salt.indexOf('.')>0 ? salt.substring(0,salt.indexOf('.')):salt));
 			
-			if(!upass.equals(password)) {
+			if(!upass.equals(loginInfo.getPassword())) {
 				//密码不一致
 				return ResponseData.error(401, "用户名或密码错误。");
 				

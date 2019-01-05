@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.finchley.study.annotation.Log;
 import org.finchley.study.constants.CommonConstants;
 import org.finchley.study.context.SessionContext;
+import org.finchley.study.dto.LoginDTO;
 import org.finchley.study.dto.MenuDTO;
 import org.finchley.study.dto.UserDO;
 import org.finchley.study.dto.UserToken;
@@ -19,7 +20,6 @@ import org.finchley.study.service.MenuService;
 import org.finchley.study.utils.HttpContextUtils;
 import org.finchley.study.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,16 +38,10 @@ public class AuthzController {
 	
 	@Log("登录")
 	@RequestMapping("/login")
-	public ResponseData login(HttpServletRequest request) {
+	public ResponseData login(@Valid LoginDTO loginInfo) {
 		
-		 String userName = request.getParameter("username");
-		 String password = request.getParameter("password");
-		 String extcode = request.getParameter("extcode");
 		
-		Assert.notNull(userName,"user name must not null.");
-		Assert.notNull(password,"password must not null.");
-		
-		ResponseData resp = authzService.login(userName,password,extcode);
+		ResponseData resp = authzService.login(loginInfo);
 		
 		if(resp.get(ResponseData.DATA_TAG)!=null && resp.get(ResponseData.DATA_TAG) instanceof UserDO) {
 			

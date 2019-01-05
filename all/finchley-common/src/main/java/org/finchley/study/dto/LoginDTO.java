@@ -2,16 +2,19 @@ package org.finchley.study.dto;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 /**
- * 登录数据容器
+ * 登录数据对象
  * @author John Fang
  *
  */
 public class LoginDTO {
-    @NotNull
+    @NotNull(message="用户账号为空。")
     private String username;
     @NotNull
-    private String pwd;
+    @Length(min=32,max=32,message="密码输入错误。")
+    private String password;
     
     private String extcode;
 
@@ -23,12 +26,12 @@ public class LoginDTO {
         this.username = username;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String password) {
-        this.pwd = password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 	public String getExtcode() {

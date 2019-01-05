@@ -17,23 +17,23 @@ public class TableColumnDO implements Serializable{
 	/**
 	 * 列数据字段
 	 */
-	String columnName,
+	String columnName;
 	/**
 	 * 列数据类型
 	 */
-	dataType, 
+	String dataType; 
 	/**
 	 * 列类型数据类型+长度
 	 */
-	columnType,
+	String columnType;
 	/**
 	 * 键类型
 	 */
-	columnKey, 
+	String columnKey;
 	/**
 	 * 列注释
 	 */
-	columnComment;
+	String columnComment;
 	/**
 	 * 列的意义 注释中的空格前文本或整个注释。
 	 */

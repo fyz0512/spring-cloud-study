@@ -14,6 +14,7 @@ public class DictionaryDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1694819577706588893L;
 
+	
 	String name;
 	String value;
 	String type;

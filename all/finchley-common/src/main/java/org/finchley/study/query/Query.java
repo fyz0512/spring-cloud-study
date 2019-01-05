@@ -9,15 +9,17 @@ import java.util.Map;
  */
 public class Query extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = 1L;
+    /*可以根据 offset和limit查询，也可以根据page和limit查询*/
     private int offset; //开始记录
     private int limit; //结束记录
     private int page; //页数
 
+    
 
     public Query() {}
     
     /**
-     * 可以根据 offset和limit查询，也可以根据page和limit查询
+     * 导入参数Map
      * @param params
      */
     public Query(Map<String, Object> params) {
@@ -43,6 +45,12 @@ public class Query extends LinkedHashMap<String, Object> {
         
     }
     
+    /**
+     * 添加参数
+     * @param name 参数名
+     * @param value 参数值
+     * @return
+     */
     public Query addParam(String name , Object value) {
     	
     	if("limit".equals(name)) {

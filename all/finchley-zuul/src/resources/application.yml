@@ -16,10 +16,7 @@ spring:
     host: 127.0.0.1
     port: 27017
     database: logs
-  mvc:
-    static-path-pattern: /**
-  resources:
-    static-locations: classpath:/static/,classpath:/uploads/ 
+
 ribbon:
     ReadTimeout: 60000
     ConnectTimeout: 60000
